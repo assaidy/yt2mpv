@@ -1,5 +1,10 @@
 # yt2mpv: never play videos on youtube
 
+### Dependencies: 
+- ffmpeg
+- mpv
+- yt-dlp
+
 
 ### Demo:
 
