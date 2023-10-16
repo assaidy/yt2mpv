@@ -10,7 +10,7 @@ DMENU="wofi --dmenu -i"
 LINK=$(wl-paste)
 
 # Define the available resolutions.
-RESOLUTIONS="1080\n720\n480\n360\n240\n144"
+RESOLUTIONS="1080\n720\n480\n360\n240\n144\nAudio-only"
 
 # Use the menu command to let the user select a resolution.
 RESOLUTION=$(printf "$RESOLUTIONS" | $DMENU -p "streaming: $LINK")
@@ -20,6 +20,12 @@ if [ -z "$RESOLUTION" ]; then
   exit 1
 fi
 
-# Play the video with mpv at the selected resolution.
+# If the user selected "Audio-only", use "bestaudio/best". 
+# Otherwise, use "bestvideo[height<=?$RESOLUTION]+bestaudio/best"
 # The --ytdl-format option is used to specify the desired video and audio quality.
-mpv --ytdl-format="bestvideo[height<=?$RESOLUTION]+bestaudio/best" $LINK
+if [ "$RESOLUTION" = "Audio-only" ]; then
+    # FORMAT="bestaudio/best"
+    mpv --force-window --no-video $LINK
+else
+    mpv --ytdl-format="bestvideo[height<=?$RESOLUTION]+bestaudio/best" $LINK
+fi
